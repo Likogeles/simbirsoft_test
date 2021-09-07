@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  CalendarFormat format = CalendarFormat.month;
+  CalendarFormat format = CalendarFormat.week;
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
@@ -17,47 +17,83 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(40.0),
+          child: AppBar(
             title: Text('List:'),
             centerTitle: true,
           ),
-          body: Column(
-            children: [
-              TableCalendar(
-                focusedDay: focusedDay,
-                firstDay: DateTime(1990),
-                lastDay: DateTime(2077),
-                calendarFormat: format,
-                calendarStyle: CalendarStyle(
-                    isTodayHighlighted: true,
-                    selectedDecoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    ),
-                    selectedTextStyle: TextStyle(color: Colors.white)),
-                headerStyle: HeaderStyle(
-                  titleCentered: true,
-                  formatButtonShowsNext: false,
+        ),
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              expandedHeight: 140.0,
+              stretch: true,
+              flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.parallax,
+                background: TableCalendar(
+                  focusedDay: focusedDay,
+                  firstDay: DateTime(1990),
+                  lastDay: DateTime(2077),
+                  calendarFormat: format,
+                  calendarStyle: CalendarStyle(
+                      isTodayHighlighted: true,
+                      selectedDecoration: BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                      ),
+                      selectedTextStyle: TextStyle(color: Colors.white)),
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    formatButtonShowsNext: false,
+                  ),
+                  onFormatChanged: (CalendarFormat _format) {
+                    setState(() {
+                      format = _format;
+                    });
+                  },
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  onDaySelected: (DateTime selectDay, DateTime focusDay) {
+                    setState(() {
+                      selectedDay = selectDay;
+                      focusedDay = focusDay;
+                    });
+                  },
+                  selectedDayPredicate: (DateTime date) {
+                    return isSameDay(selectedDay, date);
+                  },
                 ),
-                onFormatChanged: (CalendarFormat _format) {
-                  setState(() {
-                    format = _format;
-                  });
-                },
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                onDaySelected: (DateTime selectDay, DateTime focusDay) {
-                  setState(() {
-                    selectedDay = selectDay;
-                    focusedDay = focusDay;
-                  });
-                },
-                selectedDayPredicate: (DateTime date) {
-                  return isSameDay(selectedDay, date);
-                },
+                centerTitle: true,
               ),
-            ],
-          )),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return Container(
+                    color: index.isOdd ? Colors.white : Colors.black12,
+                    height: 50.0,
+                    child: ListTile(
+                      leading: Text(
+                          '${(index ~/ 10).toString() + (index % 10).toString()}:00'),
+                    ),
+                  );
+                },
+                childCount: 24,
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+            size: 40.0,
+          ),
+          onPressed: () {},
+        ),
+      ),
     );
   }
 }
