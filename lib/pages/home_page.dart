@@ -17,18 +17,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40.0),
+          preferredSize: Size.fromHeight(50.0),
           child: AppBar(
-            title: Text('List:'),
+            title: Text('Дела:'),
             centerTitle: true,
           ),
         ),
-        backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.grey[100],
               expandedHeight: 140.0,
               stretch: true,
               flexibleSpace: FlexibleSpaceBar(
@@ -46,10 +46,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       selectedTextStyle: TextStyle(color: Colors.white)),
                   headerStyle: HeaderStyle(
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                    formatButtonShowsNext: false,
-                  ),
+                      formatButtonVisible: false,
+                      titleCentered: true,
+                      formatButtonShowsNext: false,
+                      rightChevronMargin: EdgeInsets.only(right: 100)),
                   onFormatChanged: (CalendarFormat _format) {
                     setState(() {
                       format = _format;
@@ -72,12 +72,34 @@ class _HomePageState extends State<HomePage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return Container(
-                    color: index.isOdd ? Colors.white : Colors.black12,
-                    height: 50.0,
-                    child: ListTile(
-                      leading: Text(
-                          '${(index ~/ 10).toString() + (index % 10).toString()}:00'),
+                  return Card(
+                    elevation: 6,
+                    child: Container(
+                      color: index.isOdd ? Colors.grey[200] : Colors.grey[300],
+                      height: 70.0,
+                      child: ListTile(
+                        leading: Padding(
+                          child: Text(
+                            '${(index ~/ 10).toString() + (index % 10).toString()}:00',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 14.0),
+                        ),
+                        title: Text('Named ${index}'),
+                        subtitle: Text('Subtext ${index}'),
+                        trailing: Wrap(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {},
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete_forever),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -92,7 +114,9 @@ class _HomePageState extends State<HomePage> {
             size: 40.0,
           ),
           onPressed: () {},
+          backgroundColor: Colors.blue[800],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       ),
     );
   }
