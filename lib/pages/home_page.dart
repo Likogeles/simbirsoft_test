@@ -15,18 +15,11 @@ class _HomePageState extends State<HomePage> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
-  int itemscount = 0;
-
-  Future<List<Note>> loadNotes() async {
+  Future<List<Note>> getNotes() async {
     final responce =
         await rootBundle.rootBundle.loadString("lib/jsonfiles/notes.json");
     final data = await json.decode(responce) as List<dynamic>;
-    itemscount = data.length;
     return data.map((e) => Note.fromJson(e)).toList();
-  }
-
-  Future<List<Note>> getNotes() async {
-    return loadNotes();
   }
 
   @override
@@ -90,8 +83,8 @@ class _HomePageState extends State<HomePage> {
                           return Center(child: Text('${data.error}'));
                         } else if (data.hasData) {
                           var items = data.data as List<Note>;
-                          if (index < items.length)
-                            return Card(
+                          return Card(
+                              margin: EdgeInsets.symmetric(vertical: 0),
                               elevation: 6,
                               child: Container(
                                 color: index.isOdd
@@ -99,38 +92,48 @@ class _HomePageState extends State<HomePage> {
                                     : Colors.grey[300],
                                 height: 70.0,
                                 child: ListTile(
-                                  leading: Padding(
-                                    child: Text(
-                                      '${items[index].name}',
-                                      style: TextStyle(fontSize: 16),
+                                    leading: Padding(
+                                      child: Text(
+                                        '${(index ~/ 10).toString() + (index % 10).toString()}:00',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 14.0),
                                     ),
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 14.0),
-                                  ),
-                                  title: Text('Named ${index}'),
-                                  subtitle: Text('Subtext ${index}'),
-                                  trailing: Wrap(
-                                    children: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () {},
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.delete_forever),
-                                        onPressed: () {},
-                                      ),
-                                    ],
-                                  ),
+                                    title: Row(
+                                      children: [
+                                        for (var item in items)
+                                          Container(color: Colors.red, child: IconButton(icon: Icon(Icons.add), onPressed: () { },),),
+                                      ],
+                                    ),
+
+
+                                    /* subtitle:
+                                        Text('${items[index % 3].description}'),
+                                    onTap: () {
+                                      print(items[index % 3].description);
+                                    }
+                                    */
+                                    /*trailing: Wrap(
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.delete_forever),
+                                      onPressed: () {},
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            );
-                          else
-                            return Text('');
+                                */
+                                    ),
+                              ));
                         }
                         return Center(child: CircularProgressIndicator());
                       });
                 },
-                childCount: 999,
+                childCount: 24,
               ),
             ),
           ],
