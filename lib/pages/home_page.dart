@@ -84,51 +84,39 @@ class _HomePageState extends State<HomePage> {
                         } else if (data.hasData) {
                           var items = data.data as List<Note>;
                           return Card(
-                              margin: EdgeInsets.symmetric(vertical: 0),
-                              elevation: 6,
-                              child: Container(
-                                color: index.isOdd
-                                    ? Colors.grey[200]
-                                    : Colors.grey[300],
-                                height: 70.0,
-                                child: ListTile(
-                                    leading: Padding(
-                                      child: Text(
-                                        '${(index ~/ 10).toString() + (index % 10).toString()}:00',
-                                        style: TextStyle(fontSize: 16),
+                            margin: EdgeInsets.symmetric(vertical: 0),
+                            elevation: 6,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              color: index.isOdd
+                                  ? Colors.grey[200]
+                                  : Colors.grey[300],
+                              height: 70.0,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 70,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '${(index ~/ 10).toString() + (index % 10).toString()}:00',
+                                      style: TextStyle(
+                                        fontSize: 16,
                                       ),
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 14.0),
                                     ),
-                                    title: Row(
-                                      children: [
-                                        for (var item in items)
-                                          Container(color: Colors.red, child: IconButton(icon: Icon(Icons.add), onPressed: () { },),),
-                                      ],
+                                  ),
+                                  for (var item in items)
+                                    Expanded(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 70,
+                                        color: Colors.blue[400],
+                                        child: Text(item.name),
+                                      ),
                                     ),
-
-
-                                    /* subtitle:
-                                        Text('${items[index % 3].description}'),
-                                    onTap: () {
-                                      print(items[index % 3].description);
-                                    }
-                                    */
-                                    /*trailing: Wrap(
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: Icon(Icons.edit),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.delete_forever),
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
-                                */
-                                    ),
-                              ));
+                                ],
+                              ),
+                            ),
+                          );
                         }
                         return Center(child: CircularProgressIndicator());
                       });
