@@ -1,0 +1,78 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d emulator-5554 --dart-define=flutter.inspector.structuredErrors=true --web-allow-expose-url --devtools-server-address http://127.0.0.1:9100/ --target lib\main.dart
+
+## exception
+
+FileSystemException: FileSystemException: Deletion failed, path = 'E:\Flutter Projects\simbirsoft_test\.ios' (OS Error: Не удается найти указанный файл.
+, errno = 2)
+
+```
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:201:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:408:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:469:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:573:14)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:468:12)
+#6      _deleteIfExistsSync (package:flutter_tools/src/project.dart:1060:15)
+#7      IosProject._regenerateFromTemplateIfNeeded (package:flutter_tools/src/project.dart:688:5)
+#8      IosProject.ensureReadyForPlatformSpecificTooling (package:flutter_tools/src/project.dart:639:11)
+#9      FlutterProject.ensureReadyForPlatformSpecificTooling (package:flutter_tools/src/project.dart:305:17)
+<asynchronous suspension>
+#10     FlutterCommand.verifyThenRunCommand (package:flutter_tools/src/runner/flutter_command.dart:1175:7)
+<asynchronous suspension>
+#11     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1043:27)
+<asynchronous suspension>
+#12     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#13     CommandRunner.runCommand (package:args/command_runner.dart:196:13)
+<asynchronous suspension>
+#14     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:284:9)
+<asynchronous suspension>
+#15     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#16     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:232:5)
+<asynchronous suspension>
+#17     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:62:9)
+<asynchronous suspension>
+#18     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#19     main (package:flutter_tools/executable.dart:91:3)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 2.2.3, on Microsoft Windows [Version 10.0.19041.685], locale ru-RU)
+    • Flutter version 2.2.3 at C:\Users\Kirill\Documents\flutter
+    • Framework revision f4abaa0735 (2 months ago), 2021-07-01 12:46:11 -0700
+    • Engine revision 241c87ad80
+    • Dart version 2.13.4
+
+[!] Android toolchain - develop for Android devices (Android SDK version 31.0.0)
+    • Android SDK at E:\Android\SDK
+    • Platform android-31, build-tools 31.0.0
+    • ANDROID_HOME = E:\Android\SDK
+    • ANDROID_SDK_ROOT = E:\Android\SDK
+    • Java binary at: C:\Program Files (x86)\Common Files\Oracle\Java\javapath\java.exe
+    • Java version Java(TM) SE Runtime Environment (build 1.8.0_281-b09)
+    ! Some Android licenses not accepted.  To resolve this, run: flutter doctor --android-licenses
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[!] Android Studio (not installed)
+    • Android Studio not found; download from https://developer.android.com/studio/index.html
+      (or visit https://flutter.dev/docs/get-started/install/windows#android-setup for detailed instructions).
+
+[✓] Connected device (3 available)
+    • AOSP on IA Emulator (mobile) • emulator-5554 • android-x86    • Android 9 (API 28) (emulator)
+    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 93.0.4577.63
+    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 92.0.902.84
+
+! Doctor found issues in 2 categories.
+```
