@@ -130,17 +130,47 @@ class _HomePageState extends State<HomePage> {
                                     child: (item.time_start <= index + 7 &&
                                             item.time_finish >= index + 7)
                                         ? Container(
+                                            decoration: BoxDecoration(
+                                              color: Color(int.parse(
+                                                  "0xff" + item.color)),
+                                              border: Border(
+                                                left: BorderSide(
+                                                  color:
+                                                      Colors.redAccent.shade100,
+                                                  width: 2.0,
+                                                ),
+                                                right: BorderSide(
+                                                  color:
+                                                      Colors.redAccent.shade100,
+                                                  width: 3.0,
+                                                ),
+                                                top: (item.time_start ==
+                                                        index + 7)
+                                                    ? BorderSide(
+                                                        color: Colors
+                                                            .redAccent.shade100,
+                                                        width: 3.0,
+                                                      )
+                                                    : BorderSide(color: Colors.transparent),
+                                                bottom: (item.time_finish ==
+                                                        index + 7)
+                                                    ? BorderSide(
+                                                        color: Colors
+                                                            .redAccent.shade100,
+                                                        width: 3.0,
+                                                      )
+                                                    : BorderSide(color: Colors.transparent),
+                                              ),
+                                            ),
                                             alignment: Alignment.center,
                                             height: 70,
-                                            color: Color(
-                                                int.parse("0xff" + item.color)),
                                             child: ButtonTheme(
                                               minWidth: double.infinity,
                                               height: double.infinity,
                                               child: MaterialButton(
                                                 child: (item.time_start ==
                                                         index + 7)
-                                                    ? Text(item.name)
+                                                    ? Text(item.name, style: TextStyle(fontSize: 20),)
                                                     : SizedBox(),
                                                 onPressed: () {
                                                   // Нажатие на кнопку дела (на само дело)
@@ -153,15 +183,20 @@ class _HomePageState extends State<HomePage> {
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
                                                           child: Text("OK"),
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
-                                                          child: Icon(Icons.delete),
+                                                          child: Icon(
+                                                              Icons.delete),
                                                         )
                                                       ],
                                                     ),
@@ -172,6 +207,7 @@ class _HomePageState extends State<HomePage> {
                                           )
                                         : Container(),
                                   ),
+                                Container(width: 20,)
                               ],
                             ),
                           ),
