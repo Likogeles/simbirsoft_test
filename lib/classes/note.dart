@@ -3,8 +3,8 @@ class Note{
   String color;
   int time_start;
   int time_finish;
-  String date_start;
-  String date_finish;
+  int date_start;
+  int date_finish;
   String name;
   String description;
 

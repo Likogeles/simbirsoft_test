@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:simbirsoft_test/classes/note.dart';
@@ -19,7 +20,21 @@ class _HomePageState extends State<HomePage> {
     final responce =
         await rootBundle.rootBundle.loadString("lib/jsonfiles/notes.json");
     final data = await json.decode(responce) as List<dynamic>;
-    return data.map((e) => Note.fromJson(e)).toList();
+
+    return data
+        .map((e) => Note.fromJson(e))
+        .toList()
+        .where((e) => (checkDate(e)))
+        .toList();
+  }
+
+  bool checkDate(Note e) {
+    int a = e.date_start - (e.date_start % 86400);
+    int b = Timestamp.fromDate(selectedDay).seconds -
+        (Timestamp.fromDate(selectedDay).seconds % 86400);
+    int c = e.date_finish - (e.date_finish % 86400);
+    if (a <= b && c >= b) return true;
+    return false;
   }
 
   String timeFromIndex(int index) {
@@ -129,6 +144,28 @@ class _HomePageState extends State<HomePage> {
                                                     : SizedBox(),
                                                 onPressed: () {
                                                   // Нажатие на кнопку дела (на само дело)
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (_) => AlertDialog(
+                                                      title: Text(item.name),
+                                                      content: Text(
+                                                          item.description),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: Text("OK"),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: Icon(Icons.delete),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
                                                 },
                                               ),
                                             ),
