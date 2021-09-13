@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:simbirsoft_test/classes/note.dart';
@@ -29,11 +28,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool checkDate(Note e) {
-    int a = e.date_start - (e.date_start % 86400);
-    int b = Timestamp.fromDate(selectedDay).seconds -
-        (Timestamp.fromDate(selectedDay).seconds % 86400);
-    int c = e.date_finish - (e.date_finish % 86400);
-    if (a <= b && c >= b) return true;
+    DateTime a = DateTime.fromMillisecondsSinceEpoch(e.date_start * 1000);
+    DateTime b = selectedDay;
+    DateTime c = DateTime.fromMillisecondsSinceEpoch(e.date_finish * 1000);
+
+    if (a.year <= b.year &&
+        a.month <= b.month &&
+        a.day <= b.day &&
+        b.year <= c.year &&
+        b.month <= c.month &&
+        b.day <= c.day) return true;
     return false;
   }
 
@@ -151,7 +155,9 @@ class _HomePageState extends State<HomePage> {
                                                             .redAccent.shade100,
                                                         width: 3.0,
                                                       )
-                                                    : BorderSide(color: Colors.transparent),
+                                                    : BorderSide(
+                                                        color:
+                                                            Colors.transparent),
                                                 bottom: (item.time_finish ==
                                                         index + 7)
                                                     ? BorderSide(
@@ -159,7 +165,9 @@ class _HomePageState extends State<HomePage> {
                                                             .redAccent.shade100,
                                                         width: 3.0,
                                                       )
-                                                    : BorderSide(color: Colors.transparent),
+                                                    : BorderSide(
+                                                        color:
+                                                            Colors.transparent),
                                               ),
                                             ),
                                             alignment: Alignment.center,
@@ -170,7 +178,11 @@ class _HomePageState extends State<HomePage> {
                                               child: MaterialButton(
                                                 child: (item.time_start ==
                                                         index + 7)
-                                                    ? Text(item.name, style: TextStyle(fontSize: 20),)
+                                                    ? Text(
+                                                        item.name,
+                                                        style: TextStyle(
+                                                            fontSize: 20),
+                                                      )
                                                     : SizedBox(),
                                                 onPressed: () {
                                                   // Нажатие на кнопку дела (на само дело)
@@ -207,7 +219,9 @@ class _HomePageState extends State<HomePage> {
                                           )
                                         : Container(),
                                   ),
-                                Container(width: 20,)
+                                Container(
+                                  width: 30,
+                                )
                               ],
                             ),
                           ),
@@ -228,6 +242,27 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           //Нажатие на плавающую кнопку (справа сверху)
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text(''),
+              content: Text(''),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Icon(Icons.delete),
+                )
+              ],
+            ),
+          );
         },
         backgroundColor: Colors.blue[800],
       ),
