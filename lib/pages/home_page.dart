@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simbirsoft_test/pages/new_page.dart';
 import 'package:simbirsoft_test/widgets/MyCustomScrollView.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,27 +30,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           //Нажатие на плавающую кнопку (справа сверху)
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text(''),
-              content: Text(''),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.delete),
-                )
-              ],
-            ),
-          );
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>newPage()));
         },
         backgroundColor: Colors.blue[800],
       ),

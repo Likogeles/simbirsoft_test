@@ -6,14 +6,13 @@ import 'package:simbirsoft_test/classes/note.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MyCustomScrollView extends StatefulWidget {
-  const MyCustomScrollView({ Key? key }) : super(key: key);
+  const MyCustomScrollView({Key? key}) : super(key: key);
 
   @override
   _MyCustomScrollViewState createState() => _MyCustomScrollViewState();
 }
 
 class _MyCustomScrollViewState extends State<MyCustomScrollView> {
-
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
@@ -95,130 +94,126 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
               return FutureBuilder(
-                  future: getNotes(),
-                  builder: (context, data) {
-                    if (data.hasError) {
-                      return Center(child: Text('${data.error}'));
-                    } else if (data.hasData) {
-                      var items = data.data as List<Note>;
-                      return Card(
-                        margin: EdgeInsets.symmetric(vertical: 0),
-                        elevation: 6,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          color:
-                              index.isOdd ? Colors.grey[200] : Colors.grey[300],
-                          height: 70.0,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 70,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  timeFromIndex(index),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
+                future: getNotes(),
+                builder: (context, data) {
+                  if (data.hasError) {
+                    return Center(child: Text('${data.error}'));
+                  } else if (data.hasData) {
+                    var items = data.data as List<Note>;
+                    return Card(
+                      margin: EdgeInsets.symmetric(vertical: 0),
+                      elevation: 6,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color:
+                            index.isOdd ? Colors.grey[200] : Colors.grey[300],
+                        height: 70.0,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 70,
+                              alignment: Alignment.center,
+                              child: Text(
+                                timeFromIndex(index),
+                                style: TextStyle(
+                                  fontSize: 16,
                                 ),
                               ),
-                              for (var item in items)
-                                Expanded(
-                                  child: (item.time_start <= index + 7 &&
-                                          item.time_finish >= index + 7)
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(
-                                                int.parse("0xff" + item.color)),
-                                            border: Border(
-                                              left: BorderSide(
-                                                color:
-                                                    Colors.redAccent.shade100,
-                                                width: 2.0,
-                                              ),
-                                              right: BorderSide(
-                                                color:
-                                                    Colors.redAccent.shade100,
-                                                width: 3.0,
-                                              ),
-                                              top: (item.time_start ==
-                                                      index + 7)
-                                                  ? BorderSide(
-                                                      color: Colors
-                                                          .redAccent.shade100,
-                                                      width: 3.0,
-                                                    )
-                                                  : BorderSide(
-                                                      color:
-                                                          Colors.transparent),
-                                              bottom: (item.time_finish ==
-                                                      index + 7)
-                                                  ? BorderSide(
-                                                      color: Colors
-                                                          .redAccent.shade100,
-                                                      width: 3.0,
-                                                    )
-                                                  : BorderSide(
-                                                      color:
-                                                          Colors.transparent),
+                            ),
+                            for (var item in items)
+                              Expanded(
+                                child: (item.time_start <= index + 7 &&
+                                        item.time_finish >= index + 7)
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(
+                                              int.parse("0xff" + item.color)),
+                                          border: Border(
+                                            left: BorderSide(
+                                              color: Colors.redAccent.shade100,
+                                              width: 2.0,
                                             ),
-                                          ),
-                                          alignment: Alignment.center,
-                                          height: 70,
-                                          child: ButtonTheme(
-                                            minWidth: double.infinity,
-                                            height: double.infinity,
-                                            child: MaterialButton(
-                                              child:
-                                                  (item.time_start == index + 7)
-                                                      ? Text(
-                                                          item.name,
-                                                          style: TextStyle(
-                                                              fontSize: 20),
-                                                        )
-                                                      : SizedBox(),
-                                              onPressed: () {
-                                                // Нажатие на кнопку дела (на само дело)
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (_) => AlertDialog(
-                                                    title: Text(item.name),
-                                                    content:
-                                                        Text(item.description),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: Text("OK"),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child:
-                                                            Icon(Icons.delete),
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              },
+                                            right: BorderSide(
+                                              color: Colors.redAccent.shade100,
+                                              width: 3.0,
                                             ),
+                                            top: (item.time_start == index + 7)
+                                                ? BorderSide(
+                                                    color: Colors
+                                                        .redAccent.shade100,
+                                                    width: 3.0,
+                                                  )
+                                                : BorderSide(
+                                                    color: Colors.transparent),
+                                            bottom: (item.time_finish ==
+                                                    index + 7)
+                                                ? BorderSide(
+                                                    color: Colors
+                                                        .redAccent.shade100,
+                                                    width: 3.0,
+                                                  )
+                                                : BorderSide(
+                                                    color: Colors.transparent),
                                           ),
-                                        )
-                                      : Container(),
-                                ),
-                              Container(
-                                width: 30,
-                              )
-                            ],
-                          ),
+                                        ),
+                                        alignment: Alignment.center,
+                                        height: 70,
+                                        child: ButtonTheme(
+                                          minWidth: double.infinity,
+                                          height: double.infinity,
+                                          child: MaterialButton(
+                                            child: (item.time_start ==
+                                                    index + 7)
+                                                ? Text(
+                                                    item.name,
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  )
+                                                : SizedBox(),
+                                            onPressed: () {
+                                              // Нажатие на кнопку дела (на само дело)
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) => AlertDialog(
+                                                  title: Text(item.name),
+                                                  content:
+                                                      Text(item.description),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text("OK"),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Icon(Icons.delete),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                              ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(width: 30),
+                            ),
+                          ],
                         ),
-                      );
-                    }
-                    return Center(child: CircularProgressIndicator());
-                  });
+                      ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              );
             },
             childCount: 24,
           ),
@@ -226,5 +221,4 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
       ],
     );
   }
-
 }
