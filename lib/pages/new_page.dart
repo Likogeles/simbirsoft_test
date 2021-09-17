@@ -13,6 +13,26 @@ class _newPageState extends State<newPage> {
   DateTime focusedDay_1 = DateTime.now();
   DateTime selectedDay_2 = DateTime.now();
   DateTime focusedDay_2 = DateTime.now();
+  TimeOfDay selected_time = TimeOfDay.now();
+  TimeOfDay selected_time_1 = TimeOfDay.now();
+  TimeOfDay selected_time_2 = TimeOfDay.now();
+
+  Future<TimeOfDay> timeselect() async {
+    selected_time = (await showTimePicker(
+      cancelText: "Отмена",
+      confirmText: "Ок",
+      helpText: "Время начала",
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
+      context: context,
+      initialTime: selected_time,
+    ))!;
+    return selected_time;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +44,19 @@ class _newPageState extends State<newPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Дата начала",
-              style: TextStyle(fontSize: 20),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(width: 3),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Text(
+                "Дата начала",
+                style: TextStyle(fontSize: 20),
+              ),
             ),
           ),
           Container(
@@ -110,7 +138,27 @@ class _newPageState extends State<newPage> {
               },
             ),
           ),
-          
+          Container(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Text("Время начала: ", style: TextStyle(fontSize: 20)),
+                  MaterialButton(
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text(
+                      selected_time_1.hour.toString() + ":00",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {
+                      timeselect();
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
