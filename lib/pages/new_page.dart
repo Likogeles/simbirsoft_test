@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class newPage extends StatefulWidget {
@@ -13,26 +14,8 @@ class _newPageState extends State<newPage> {
   DateTime focusedDay_1 = DateTime.now();
   DateTime selectedDay_2 = DateTime.now();
   DateTime focusedDay_2 = DateTime.now();
-  TimeOfDay selected_time = TimeOfDay.now();
-  TimeOfDay selected_time_1 = TimeOfDay.now();
-  TimeOfDay selected_time_2 = TimeOfDay.now();
-
-  Future<TimeOfDay> timeselect() async {
-    selected_time = (await showTimePicker(
-      cancelText: "Отмена",
-      confirmText: "Ок",
-      helpText: "Время начала",
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      },
-      context: context,
-      initialTime: selected_time,
-    ))!;
-    return selected_time;
-  }
+  int selected_time_1 = TimeOfDay.now().hour;
+  int selected_time_2 = TimeOfDay.now().hour;
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +122,11 @@ class _newPageState extends State<newPage> {
             ),
           ),
           Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 3),
+              ),
+            ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -148,13 +136,57 @@ class _newPageState extends State<newPage> {
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     child: Text(
-                      selected_time_1.hour.toString() + ":00",
+                      selected_time_1.toString() + ":00",
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
-                      timeselect();
+                      DatePicker.showTimePicker(
+                        context,
+                        showSecondsColumn: false,
+                        locale: LocaleType.ru,
+                        onConfirm: (time) {
+                          setState(() {
+                            selected_time_1 = time.hour;
+                          });
+                        },
+                      );
                     },
-                  )
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 3),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Text("Время окончания: ", style: TextStyle(fontSize: 20)),
+                  MaterialButton(
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text(
+                      selected_time_2.toString() + ":00",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {
+                      DatePicker.showTimePicker(
+                        context,
+                        showSecondsColumn: false,
+                        locale: LocaleType.ru,
+                        onConfirm: (time) {
+                          setState(() {
+                            selected_time_2 = time.hour;
+                          });
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
