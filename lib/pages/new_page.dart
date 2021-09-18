@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter/src/material/input_decorator.dart';
 
 class newPage extends StatefulWidget {
   const newPage({Key? key}) : super(key: key);
@@ -16,6 +17,8 @@ class _newPageState extends State<newPage> {
   DateTime focusedDay_2 = DateTime.now();
   int selected_time_1 = TimeOfDay.now().hour;
   int selected_time_2 = TimeOfDay.now().hour;
+  String name = "Название";
+  String description = "Описание";
 
   @override
   Widget build(BuildContext context) {
@@ -24,174 +27,209 @@ class _newPageState extends State<newPage> {
         title: Text("Добавление дела"),
         centerTitle: true,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(width: 3),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: name,
+                    labelText: "Название",
+                    labelStyle: TextStyle(fontSize: 20),
+                    hintStyle: TextStyle(fontSize: 20),
+                    border: OutlineInputBorder(),
+                  ),
+                  onSubmitted: (text){name=text;},
+                  keyboardType: TextInputType.text,
+                ),
               ),
             ),
-            child: Padding(
+            Container(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: description,
+                    labelText: "Краткое описание дела",
+                    labelStyle: TextStyle(fontSize: 20),
+                    hintStyle: TextStyle(fontSize: 20),
+                    border: OutlineInputBorder(),
+                  ),
+                  onSubmitted: (text){description=text;},
+                  keyboardType: TextInputType.text,
+                  maxLines: 2,
+                ),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(width: 3),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Text(
+                  "Дата начала",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 3),
+                  top: BorderSide(width: 3),
+                ),
+              ),
+              child: TableCalendar(
+                focusedDay: focusedDay_1,
+                firstDay: DateTime(1990),
+                lastDay: DateTime(2077),
+                calendarFormat: CalendarFormat.week,
+                calendarStyle: CalendarStyle(
+                    isTodayHighlighted: true,
+                    selectedDecoration: BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
+                    ),
+                    selectedTextStyle: TextStyle(color: Colors.white)),
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                onDaySelected: (DateTime selectDay, DateTime focusDay) {
+                  // Смена дня в календаре
+                  setState(() {
+                    selectedDay_1 = selectDay;
+                    focusedDay_1 = focusDay;
+                  });
+                },
+                selectedDayPredicate: (DateTime date) {
+                  return isSameDay(selectedDay_1, date);
+                },
+              ),
+            ),
+            Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Text(
-                "Дата начала",
+                "Дата окончания",
                 style: TextStyle(fontSize: 20),
               ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 3),
-                top: BorderSide(width: 3),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 3),
+                  top: BorderSide(width: 3),
+                ),
               ),
-            ),
-            child: TableCalendar(
-              focusedDay: focusedDay_1,
-              firstDay: DateTime(1990),
-              lastDay: DateTime(2077),
-              calendarFormat: CalendarFormat.week,
-              calendarStyle: CalendarStyle(
-                  isTodayHighlighted: true,
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                  selectedTextStyle: TextStyle(color: Colors.white)),
-              headerStyle: HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
-              ),
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              onDaySelected: (DateTime selectDay, DateTime focusDay) {
-                // Смена дня в календаре
-                setState(() {
-                  selectedDay_1 = selectDay;
-                  focusedDay_1 = focusDay;
-                });
-              },
-              selectedDayPredicate: (DateTime date) {
-                return isSameDay(selectedDay_1, date);
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Дата окончания",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 3),
-                top: BorderSide(width: 3),
-              ),
-            ),
-            child: TableCalendar(
-              focusedDay: focusedDay_2,
-              firstDay: DateTime(1990),
-              lastDay: DateTime(2077),
-              calendarFormat: CalendarFormat.week,
-              calendarStyle: CalendarStyle(
-                  isTodayHighlighted: true,
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                  selectedTextStyle: TextStyle(color: Colors.white)),
-              headerStyle: HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
-              ),
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              onDaySelected: (DateTime selectDay, DateTime focusDay) {
-                // Смена дня в календаре
-                setState(() {
-                  selectedDay_2 = selectDay;
-                  focusedDay_2 = focusDay;
-                });
-              },
-              selectedDayPredicate: (DateTime date) {
-                return isSameDay(selectedDay_2, date);
-              },
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 3),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Text("Время начала: ", style: TextStyle(fontSize: 20)),
-                  MaterialButton(
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    child: Text(
-                      selected_time_1.toString() + ":00",
-                      style: TextStyle(fontSize: 20),
+              child: TableCalendar(
+                focusedDay: focusedDay_2,
+                firstDay: DateTime(1990),
+                lastDay: DateTime(2077),
+                calendarFormat: CalendarFormat.week,
+                calendarStyle: CalendarStyle(
+                    isTodayHighlighted: true,
+                    selectedDecoration: BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
                     ),
-                    onPressed: () {
-                      DatePicker.showTimePicker(
-                        context,
-                        showSecondsColumn: false,
-                        locale: LocaleType.ru,
-                        onConfirm: (time) {
-                          setState(() {
-                            selected_time_1 = time.hour;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ],
+                    selectedTextStyle: TextStyle(color: Colors.white)),
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                onDaySelected: (DateTime selectDay, DateTime focusDay) {
+                  // Смена дня в календаре
+                  setState(() {
+                    selectedDay_2 = selectDay;
+                    focusedDay_2 = focusDay;
+                  });
+                },
+                selectedDayPredicate: (DateTime date) {
+                  return isSameDay(selectedDay_2, date);
+                },
               ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 3),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 3),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Text("Время окончания: ", style: TextStyle(fontSize: 20)),
-                  MaterialButton(
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    child: Text(
-                      selected_time_2.toString() + ":00",
-                      style: TextStyle(fontSize: 20),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text("Время начала: ", style: TextStyle(fontSize: 20)),
+                    MaterialButton(
+                      color: Colors.blueAccent,
+                      textColor: Colors.white,
+                      child: Text(
+                        selected_time_1.toString() + ":00",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        DatePicker.showTimePicker(
+                          context,
+                          showSecondsColumn: false,
+                          locale: LocaleType.ru,
+                          onConfirm: (time) {
+                            setState(() {
+                              selected_time_1 = time.hour;
+                            });
+                          },
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      DatePicker.showTimePicker(
-                        context,
-                        showSecondsColumn: false,
-                        locale: LocaleType.ru,
-                        onConfirm: (time) {
-                          setState(() {
-                            selected_time_2 = time.hour;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 3),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text("Время окончания: ", style: TextStyle(fontSize: 20)),
+                    MaterialButton(
+                      color: Colors.blueAccent,
+                      textColor: Colors.white,
+                      child: Text(
+                        selected_time_2.toString() + ":00",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        DatePicker.showTimePicker(
+                          context,
+                          showSecondsColumn: false,
+                          locale: LocaleType.ru,
+                          onConfirm: (time) {
+                            setState(() {
+                              selected_time_2 = time.hour;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
