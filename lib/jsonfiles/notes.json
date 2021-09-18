@@ -2,8 +2,8 @@
     {
         "id": 0,
         "color": "00B8D0",
-        "time_start": 8,
-        "time_finish": 10,
+        "time_start": 2,
+        "time_finish": 5,
         "date_start": 1631465909,
         "date_finish": 1631465909,
         "name": "Луна",
@@ -12,8 +12,8 @@
     {
         "id": 1,
         "color": "58b474",
-        "time_start": 10,
-        "time_finish": 12,
+        "time_start": 2,
+        "time_finish": 4,
         "date_start": 1631565909,
         "date_finish": 1631565909,
         "name": "Марс",
@@ -22,8 +22,8 @@
     {
         "id": 2,
         "color": "d5d069",
-        "time_start": 9,
-        "time_finish": 19,
+        "time_start": 4,
+        "time_finish": 13,
         "date_start": 1631465909,
         "date_finish": 1631465909,
         "name": "Уран",

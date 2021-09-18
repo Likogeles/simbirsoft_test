@@ -44,7 +44,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
 
   String timeFromIndex(int index) {
     if (index < 24 - 7)
-      return '${((index + 7) ~/ 10).toString() + ((index + 7) % 10).toString()}:00 ';
+      return '${((index + 7) ~/ 10).toString() + ((index + 7) % 10).toString()}:00';
     return '${((index - 17) ~/ 10).toString() + ((index - 17) % 10).toString()}:00';
   }
 
@@ -138,7 +138,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                               width: 70,
                               alignment: Alignment.center,
                               child: Text(
-                                timeFromIndex(index),
+                                '${index.toString().padLeft(2, '0')}:00',
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -146,8 +146,8 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                             ),
                             for (var item in items)
                               Expanded(
-                                child: (item.time_start <= index + 7 &&
-                                        item.time_finish >= index + 7)
+                                child: (item.time_start <= index &&
+                                        item.time_finish >= index)
                                     ? Container(
                                         decoration: BoxDecoration(
                                           color: Color(
@@ -161,7 +161,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                                               color: Colors.redAccent.shade100,
                                               width: 3.0,
                                             ),
-                                            top: (item.time_start == index + 7)
+                                            top: (item.time_start == index)
                                                 ? BorderSide(
                                                     color: Colors
                                                         .redAccent.shade100,
@@ -169,8 +169,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                                                   )
                                                 : BorderSide(
                                                     color: Colors.transparent),
-                                            bottom: (item.time_finish ==
-                                                    index + 7)
+                                            bottom: (item.time_finish == index)
                                                 ? BorderSide(
                                                     color: Colors
                                                         .redAccent.shade100,
@@ -186,14 +185,13 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                                           minWidth: double.infinity,
                                           height: double.infinity,
                                           child: MaterialButton(
-                                              child:
-                                                  (item.time_start == index + 7)
-                                                      ? Text(
-                                                          item.name,
-                                                          style: TextStyle(
-                                                              fontSize: 20),
-                                                        )
-                                                      : SizedBox(),
+                                              child: (item.time_start == index)
+                                                  ? Text(
+                                                      item.name,
+                                                      style: TextStyle(
+                                                          fontSize: 20),
+                                                    )
+                                                  : SizedBox(),
                                               onPressed: () => showDialogToDo(
                                                   item) // Нажатие на кнопку дела (на само дело)
                                               ),
