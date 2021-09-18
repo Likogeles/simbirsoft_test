@@ -60,8 +60,8 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
             collapseMode: CollapseMode.parallax,
             background: TableCalendar(
               focusedDay: focusedDay,
-              firstDay: DateTime(1990),
-              lastDay: DateTime(2077),
+              firstDay: DateTime(DateTime.now().year - 5),
+              lastDay: DateTime(DateTime.now().year + 5),
               calendarFormat: CalendarFormat.week,
               calendarStyle: CalendarStyle(
                   isTodayHighlighted: true,
