@@ -48,6 +48,30 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
     return '${((index - 17) ~/ 10).toString() + ((index - 17) % 10).toString()}:00';
   }
 
+  showDialogToDo(Note item) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(item.name),
+        content: Text(item.description),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("OK"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(Icons.delete),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -162,42 +186,17 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                                           minWidth: double.infinity,
                                           height: double.infinity,
                                           child: MaterialButton(
-                                            child: (item.time_start ==
-                                                    index + 7)
-                                                ? Text(
-                                                    item.name,
-                                                    style:
-                                                        TextStyle(fontSize: 20),
-                                                  )
-                                                : SizedBox(),
-                                            onPressed: () {
-                                              // Нажатие на кнопку дела (на само дело)
-                                              showDialog(
-                                                context: context,
-                                                builder: (_) => AlertDialog(
-                                                  title: Text(item.name),
-                                                  content:
-                                                      Text(item.description),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text("OK"),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Icon(Icons.delete),
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                              child:
+                                                  (item.time_start == index + 7)
+                                                      ? Text(
+                                                          item.name,
+                                                          style: TextStyle(
+                                                              fontSize: 20),
+                                                        )
+                                                      : SizedBox(),
+                                              onPressed: () => showDialogToDo(
+                                                  item) // Нажатие на кнопку дела (на само дело)
+                                              ),
                                         ),
                                       )
                                     : Container(),

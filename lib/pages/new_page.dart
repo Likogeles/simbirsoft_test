@@ -1,9 +1,5 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter/src/material/input_decorator.dart';
 
 class newPage extends StatefulWidget {
   const newPage({Key? key}) : super(key: key);
@@ -156,7 +152,9 @@ class _newPageState extends State<newPage> {
                       color: Colors.blueAccent,
                       textColor: Colors.white,
                       child: Text(
+
                         "${selected_time_1.hour.toString().padLeft(2, '0')}:${selected_time_1.minute.toString().padLeft(2, '0')}",
+
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () => pickTime(context, 0),
