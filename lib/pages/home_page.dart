@@ -9,6 +9,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+// Даты запланнированных дел в json:
+// 12 сентября
+// 13 сентября
+// 19 сентября
+
 class _HomePageState extends State<HomePage> {
 
   @override

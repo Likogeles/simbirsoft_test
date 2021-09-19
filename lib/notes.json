@@ -28,25 +28,5 @@
         "date_finish": 1631465909,
         "name": "Уран",
         "description": "Взорвать Уран"
-    },
-    {
-        "id": 3,
-        "color": "cccc33",
-        "time_start": 2,
-        "time_finish": 5,
-        "date_start": 1632062071,
-        "date_finish": 1632062071,
-        "name": "Тестовое дело",
-        "description": "Первое"
-    },
-    {
-        "id": 4,
-        "color": "66cc33",
-        "time_start": 4,
-        "time_finish": 13,
-        "date_start": 1632062071,
-        "date_finish": 1632062071,
-        "name": "Тестовое дело",
-        "description": "Второе"
     }
 ]
