@@ -97,7 +97,7 @@ class _newPageState extends State<newPage> {
     );
 
     data.add(item.toJson());
-    
+
     /*
     try {
       print(await getApplicationSupportDirectory());
@@ -112,6 +112,8 @@ class _newPageState extends State<newPage> {
     print('');
     print(data);
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -232,8 +234,9 @@ class _newPageState extends State<newPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text("Добавить", style: TextStyle(fontSize: 16)),
+        icon: Icon(
           Icons.add,
           size: 40,
         ),

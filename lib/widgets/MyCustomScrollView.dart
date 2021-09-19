@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
+import 'package:intl/intl.dart';
 import 'package:simbirsoft_test/classes/note.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -49,11 +50,18 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
   }
 
   showDialogToDo(Note item) {
+    String text = item.description +
+        "\n\nДата:\n\t" +
+        DateFormat('dd-MM-yyyy').format(
+            DateTime.fromMillisecondsSinceEpoch(item.date_start * 1000)) +
+        "\n\nВремя:\n\t" +
+        "${item.time_start.toString().padLeft(2, '0')}:00";
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: Text(item.name),
-        content: Text(item.description),
+        content: Text(text),
         actions: [
           TextButton(
             onPressed: () {
@@ -71,6 +79,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
