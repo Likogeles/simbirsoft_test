@@ -146,8 +146,8 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
                             ),
                             for (var item in items)
                               Expanded(
-                                child: (item.time_start <= index &&
-                                        item.time_finish >= index)
+                                child: ((item.time_start <= index &&
+                                        item.time_finish >= index))
                                     ? Container(
                                         decoration: BoxDecoration(
                                           color: Color(
