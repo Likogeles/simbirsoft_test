@@ -299,6 +299,7 @@ class _newPageState extends State<newPage> {
             );
           } else {
             Navigator.of(context).pop();
+            setState(() {});
           }
         },
       ),

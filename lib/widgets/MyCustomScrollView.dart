@@ -18,10 +18,12 @@ class MyCustomScrollView extends StatefulWidget {
 class _MyCustomScrollViewState extends State<MyCustomScrollView> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  int tick = 0;
 
   Directory? dir = null;
   File? jsonFile = null;
   List<dynamic>? fileContent = [];
+  List<dynamic> jsonFileContent = [];
 
   String fileName = "notes.json";
   bool fileExist = false;
@@ -51,9 +53,8 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
   }
 
   Future<List<Note>> getNotes() async {
+    jsonFileContent = await json.decode(jsonFile!.readAsStringSync());
 
-    List<dynamic> jsonFileContent =
-        await json.decode(jsonFile!.readAsStringSync());
     List<Note> newList = [];
 
     for (dynamic item in jsonFileContent) {
@@ -69,7 +70,11 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
       newList.add(newNote);
     }
 
-    this.setState(() {});
+    tick++;
+    if (tick >= 10) {
+      setState(() {});
+      tick = 0;
+    }
     return newList.where((e) => (checkDate(e))).toList();
   }
 
@@ -125,14 +130,12 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
     );
   }
 
-  delToDo(int id){
-
+  delToDo(int id) {
     List<dynamic> jsonFileContent = json.decode(jsonFile!.readAsStringSync());
 
     jsonFileContent = jsonFileContent.where((e) => (e['id'] != id)).toList();
-    
 
-    for(int i =0; i < jsonFileContent.length; i++){
+    for (int i = 0; i < jsonFileContent.length; i++) {
       jsonFileContent[i]['id'] = i;
     }
 
