@@ -35,13 +35,11 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
       jsonFile = new File(dir!.path + '/' + fileName);
       fileExist = jsonFile!.existsSync();
 
-      if (fileExist) {
-        this.setState(() {
-          fileContent = json.decode(jsonFile!.readAsStringSync());
-        });
-      } else {
-        createFile([], dir!, fileName);
-      }
+      if (!fileExist) createFile([], dir!, fileName);
+
+      this.setState(() {
+        fileContent = json.decode(jsonFile!.readAsStringSync());
+      });
     });
   }
 
@@ -65,25 +63,21 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
         .toList();
     */
 
+    List<dynamic> jsonFileContent =
+        await json.decode(jsonFile!.readAsStringSync());
     List<Note> newList = [];
 
-    if (fileExist) {
-      List<dynamic> jsonFileContent =
-          await json.decode(jsonFile!.readAsStringSync());
-      for (dynamic item in jsonFileContent) {
-        Note newNote = new Note(
-            id: item['id'],
-            color: item['color'],
-            time_start: item['time_start'],
-            time_finish: item['time_finish'],
-            date_start: item['date_start'],
-            date_finish: item['date_finish'],
-            name: item['name'],
-            description: item["description"]);
-        newList.add(newNote);
-      }
-    } else {
-      createFile([], dir!, fileName);
+    for (dynamic item in jsonFileContent) {
+      Note newNote = new Note(
+          id: item['id'],
+          color: item['color'],
+          time_start: item['time_start'],
+          time_finish: item['time_finish'],
+          date_start: item['date_start'],
+          date_finish: item['date_finish'],
+          name: item['name'],
+          description: item["description"]);
+      newList.add(newNote);
     }
 
     return newList.where((e) => (checkDate(e))).toList();
