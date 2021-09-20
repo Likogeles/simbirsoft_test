@@ -23,6 +23,63 @@ class _newPageState extends State<newPage> {
   String name = "Название";
   String description = "Описание";
 
+  Directory? dir = null;
+  File? jsonFile = null;
+  List<dynamic>? fileContent = [];
+
+  String fileName = "notes.json";
+  bool fileExist = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getApplicationDocumentsDirectory().then((Directory directory) {
+      dir = directory;
+      jsonFile = new File(dir!.path + '/' + fileName);
+      fileExist = jsonFile!.existsSync();
+
+      if (fileExist)
+        this.setState(() {
+          fileContent = json.decode(jsonFile!.readAsStringSync());
+        });
+    });
+  }
+
+  void createFile(List<dynamic> content, Directory dir, String fileName) {
+    File file = new File(dir.path + '/' + fileName);
+    file.createSync();
+    fileExist = true;
+    file.writeAsStringSync(json.encode(content));
+  }
+
+  void writeToFile(Note item) {
+    List<dynamic> newContent = fileContent!;
+
+    Map<String, dynamic> content = {
+      "id": item.id,
+      "color": item.color.toString(),
+      "time_start": item.time_start,
+      "time_finish": item.time_finish,
+      "date_start": item.date_start,
+      "date_finish": item.date_finish,
+      "name": item.name.toString(),
+      "description": item.description.toString()
+    };
+    
+    newContent.add(content);
+
+    if (fileExist) {
+      List<dynamic> jsonFileContent = json.decode(jsonFile!.readAsStringSync());
+      jsonFileContent.addAll([content]);
+      jsonFile!.writeAsStringSync(json.encode(jsonFileContent));
+    } else {
+      createFile(newContent, dir!, fileName);
+    }
+    this.setState(() {
+      fileContent = json.decode(jsonFile!.readAsStringSync());
+    });
+  }
+
   Future pickDate(BuildContext context) async {
     final initialDate = date;
 
@@ -31,7 +88,7 @@ class _newPageState extends State<newPage> {
       initialDate: date,
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
-      helpText: "Выбор диапазона дат дела",
+      helpText: "Выбор даты",
       cancelText: "Отмена",
       confirmText: "Принять",
     );
@@ -69,51 +126,25 @@ class _newPageState extends State<newPage> {
     setState(() => timeRange = newTimeRange);
   }
 
-  Future<String> getFilePath() async {
-    Directory appDocumentsDirectory =
-        await getApplicationDocumentsDirectory(); // 1
-    String appDocumentsPath = appDocumentsDirectory.path; // 2
-    String filePath = '$appDocumentsPath/notes.json'; // 3
-    print(filePath);
-    return filePath;
-  }
+  void saveJsonFile(
+      String name, String description, DateTime date, TimeRange timeRange) {
 
-  saveJsonFile(String name, String description, DateTime date,
-      TimeRange timeRange) async {
-    final responce =
-        await rootBundle.rootBundle.loadString("lib/jsonfiles/notes.json");
-    final data = await json.decode(responce) as List<dynamic>;
+    int id = 0;
+    id = fileContent!.length;
 
-    int id = data[data.length - 1]['id'];
     Note item = new Note(
       id: id,
+      name: name,
+      description: description,
       color: "00B8D0",
       time_start: timeRange.startTime.hour,
       time_finish: timeRange.endTime.hour,
       date_start: date.millisecondsSinceEpoch ~/ 1000,
       date_finish: date.millisecondsSinceEpoch ~/ 1000,
-      name: name,
-      description: description,
     );
 
-    data.add(item.toJson());
-
-    /*
-    try {
-      print(await getApplicationSupportDirectory());
-      File file = File(await getFilePath()); // 1
-      file.writeAsStringSync(data.toString());
-    } catch (ex) {
-      print('');
-      print(ex);
-    }
-    */
-
-    print('');
-    print(data);
+    writeToFile(item);
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

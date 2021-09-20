@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:simbirsoft_test/classes/note.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -17,16 +19,74 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
+  Directory? dir = null;
+  File? jsonFile = null;
+  List<dynamic>? fileContent = [];
+
+  String fileName = "notes.json";
+  bool fileExist = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getApplicationDocumentsDirectory().then((Directory directory) {
+      dir = directory;
+      jsonFile = new File(dir!.path + '/' + fileName);
+      fileExist = jsonFile!.existsSync();
+
+      if (fileExist) {
+        this.setState(() {
+          fileContent = json.decode(jsonFile!.readAsStringSync());
+        });
+      } else {
+        createFile([], dir!, fileName);
+      }
+    });
+  }
+
+  void createFile(List<dynamic> content, Directory dir, String fileName) {
+    File file = new File(dir.path + '/' + fileName);
+    file.createSync();
+    fileExist = true;
+    file.writeAsStringSync(json.encode(content));
+  }
+
   Future<List<Note>> getNotes() async {
+    /*
     final responce =
         await rootBundle.rootBundle.loadString("lib/jsonfiles/notes.json");
     final data = await json.decode(responce) as List<dynamic>;
-
+    
     return data
         .map((e) => Note.fromJson(e))
         .toList()
         .where((e) => (checkDate(e)))
         .toList();
+    */
+
+    List<Note> newList = [];
+
+    if (fileExist) {
+      List<dynamic> jsonFileContent =
+          await json.decode(jsonFile!.readAsStringSync());
+      for (dynamic item in jsonFileContent) {
+        Note newNote = new Note(
+            id: item['id'],
+            color: item['color'],
+            time_start: item['time_start'],
+            time_finish: item['time_finish'],
+            date_start: item['date_start'],
+            date_finish: item['date_finish'],
+            name: item['name'],
+            description: item["description"]);
+        newList.add(newNote);
+      }
+    } else {
+      createFile([], dir!, fileName);
+    }
+
+    return newList.where((e) => (checkDate(e))).toList();
   }
 
   bool checkDate(Note e) {
@@ -79,7 +139,6 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
