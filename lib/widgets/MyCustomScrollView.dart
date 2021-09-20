@@ -80,6 +80,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
       newList.add(newNote);
     }
 
+    this.setState(() {});
     return newList.where((e) => (checkDate(e))).toList();
   }
 
@@ -132,6 +133,21 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
         ],
       ),
     );
+  }
+
+  delThing(int id) {
+    List<dynamic> newContent = fileContent!;
+
+    if (fileExist) {
+      List<dynamic> jsonFileContent = json.decode(jsonFile!.readAsStringSync());
+
+      jsonFile!.writeAsStringSync(json.encode(jsonFileContent));
+    } else {
+      createFile(newContent, dir!, fileName);
+    }
+    this.setState(() {
+      fileContent = json.decode(jsonFile!.readAsStringSync());
+    });
   }
 
   @override
