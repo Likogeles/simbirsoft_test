@@ -22,6 +22,7 @@ class _newPageState extends State<newPage> {
       endTime: TimeOfDay(hour: 21, minute: 0));
   String name = "Название";
   String description = "Описание";
+  String buttonString = "Добавить";
 
   Directory? dir = null;
   File? jsonFile = null;
@@ -65,7 +66,7 @@ class _newPageState extends State<newPage> {
       "name": item.name.toString(),
       "description": item.description.toString()
     };
-    
+
     newContent.add(content);
 
     if (fileExist) {
@@ -126,12 +127,12 @@ class _newPageState extends State<newPage> {
     setState(() => timeRange = newTimeRange);
   }
 
-  void saveJsonFile(
+  bool saveJsonFile(
       String name, String description, DateTime date, TimeRange timeRange) {
+    if (timeRange.startTime.hour > timeRange.endTime.hour) return false;
 
     int id = 0;
     id = fileContent!.length;
-
     Note item = new Note(
       id: id,
       name: name,
@@ -144,6 +145,7 @@ class _newPageState extends State<newPage> {
     );
 
     writeToFile(item);
+    return true;
   }
 
   @override
@@ -171,6 +173,9 @@ class _newPageState extends State<newPage> {
                   onSubmitted: (text) {
                     name = text;
                   },
+                  onChanged: (text) {
+                    name = text;
+                  },
                   keyboardType: TextInputType.text,
                 ),
               ),
@@ -187,6 +192,9 @@ class _newPageState extends State<newPage> {
                     border: OutlineInputBorder(),
                   ),
                   onSubmitted: (text) {
+                    description = text;
+                  },
+                  onChanged: (text) {
                     description = text;
                   },
                   keyboardType: TextInputType.text,
@@ -273,8 +281,25 @@ class _newPageState extends State<newPage> {
         ),
         onPressed: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          saveJsonFile(name, description, date, timeRange);
-          Navigator.of(context).pop();
+          if (!saveJsonFile(name, description, date, timeRange)) {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text("Ошибка"),
+                content: Text("Указано некоректное время."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("OK"),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            Navigator.of(context).pop();
+          }
         },
       ),
     );

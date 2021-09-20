@@ -51,17 +51,6 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
   }
 
   Future<List<Note>> getNotes() async {
-    /*
-    final responce =
-        await rootBundle.rootBundle.loadString("lib/jsonfiles/notes.json");
-    final data = await json.decode(responce) as List<dynamic>;
-    
-    return data
-        .map((e) => Note.fromJson(e))
-        .toList()
-        .where((e) => (checkDate(e)))
-        .toList();
-    */
 
     List<dynamic> jsonFileContent =
         await json.decode(jsonFile!.readAsStringSync());
@@ -127,6 +116,7 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              delToDo(item.id);
             },
             child: Icon(Icons.delete),
           )
@@ -135,19 +125,24 @@ class _MyCustomScrollViewState extends State<MyCustomScrollView> {
     );
   }
 
-  delThing(int id) {
-    List<dynamic> newContent = fileContent!;
+  delToDo(int id){
+
+    List<dynamic> jsonFileContent = json.decode(jsonFile!.readAsStringSync());
+
+    jsonFileContent = jsonFileContent.where((e) => (e['id'] != id)).toList();
+    
+
+    for(int i =0; i < jsonFileContent.length; i++){
+      jsonFileContent[i]['id'] = i;
+    }
 
     if (fileExist) {
-      List<dynamic> jsonFileContent = json.decode(jsonFile!.readAsStringSync());
-
       jsonFile!.writeAsStringSync(json.encode(jsonFileContent));
     } else {
-      createFile(newContent, dir!, fileName);
+      createFile(jsonFileContent, dir!, fileName);
     }
-    this.setState(() {
-      fileContent = json.decode(jsonFile!.readAsStringSync());
-    });
+
+    this.setState(() {});
   }
 
   @override
